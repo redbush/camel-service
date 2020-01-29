@@ -31,6 +31,8 @@ dependencies {
 	implementation "org.apache.camel.springboot:camel-hystrix-starter:${camelVersion}"
 	implementation "org.apache.camel.springboot:camel-jackson-starter:${camelVersion}"
 	implementation "org.apache.camel.springboot:camel-bean-validator-starter:${camelVersion}"
+	implementation "org.apache.camel.springboot:camel-rest-starter:${camelVersion}"
+	implementation "org.apache.camel.springboot:camel-http-starter:${camelVersion}"
 	implementation 'javax.xml.bind:jaxb-api:2.3.1'
 	implementation 'org.apache.commons:commons-lang3:3.9'
 	compileOnly 'org.projectlombok:lombok:1.18.10'
