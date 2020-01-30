@@ -1,1 +1,1 @@
-brian.camel.converter.UserConverter,brian.camel.converter.ScheduleConverter
+brian.camel.converter.ScheduleConverter,brian.camel.converter.UserConverter

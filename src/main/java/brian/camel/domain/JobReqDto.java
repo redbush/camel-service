@@ -10,14 +10,20 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode
-public class UserDto {
+public class JobReqDto {
 
 	@NotBlank
-	private final String name;
+	private final String schedule;
+	@NotBlank
+	private final String query;
 	
 	@JsonCreator
-	public UserDto(@JsonProperty("name") final String nameIn) {
-		name = nameIn;
+	public JobReqDto(
+			@JsonProperty("schedule") final String scheduleIn,
+			@JsonProperty("query") final String queryIn) {
+		
+		schedule = scheduleIn;
+		query = queryIn;
 	}
 	
 }

@@ -28,13 +28,13 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import brian.camel.config.CamelServiceApplication;
-import brian.camel.domain.CreateUserDto;
+import brian.camel.domain.UserDto;
 
 @CamelSpringBootTest
 @SpringBootTest(classes = CamelServiceApplication.class, webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 @MockEndpoints
-class UserRouteIT {
+class SimpleServiceIT {
 	
 	@EndpointInject("mock:direct:createUser")
 	private MockEndpoint createUserEndpoint;
@@ -49,16 +49,16 @@ class UserRouteIT {
 	private ObjectMapper objectMapper;
 	
 	@Test
-	void addAndGet() throws Exception {
+	void create() throws Exception {
 
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(APPLICATION_JSON);
 		httpHeaders.setAccept(List.of(APPLICATION_JSON));
-		CreateUserDto userDto = new CreateUserDto("joeBob");
+		UserDto userDto = new UserDto("jimmy");
 		createUserEndpoint.expectedMessageCount(1);
 		
 		ResponseEntity<String> actual = restTemplate.exchange(
-				"/users", 
+				"/users/create", 
 				POST, 
 				new HttpEntity<>(objectMapper.writeValueAsString(userDto), httpHeaders), 
 				String.class, Map.of());

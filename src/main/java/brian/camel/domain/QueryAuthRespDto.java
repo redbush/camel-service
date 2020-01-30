@@ -1,7 +1,5 @@
 package brian.camel.domain;
 
-import javax.validation.constraints.NotBlank;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -10,14 +8,13 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode
-public class UserDto {
+public class QueryAuthRespDto {
 
-	@NotBlank
-	private final String name;
+	private final boolean authorized;
 	
 	@JsonCreator
-	public UserDto(@JsonProperty("name") final String nameIn) {
-		name = nameIn;
+	public QueryAuthRespDto(@JsonProperty("authorized") final boolean authorizedIn) {
+		authorized = authorizedIn;
 	}
 	
 }

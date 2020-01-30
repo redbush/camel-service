@@ -7,6 +7,9 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Header;
 import org.springframework.stereotype.Component;
 
+import brian.camel.domain.QueryAuthRespDto;
+import brian.camel.domain.Schedule;
+
 @Component
 public class ScheduleRouter {
 
@@ -21,6 +24,11 @@ public class ScheduleRouter {
 		case "direct://parse":
 			return "direct:authorize";
 		case "direct://authorize":
+			QueryAuthRespDto authResponse = exchange.getIn().getBody(QueryAuthRespDto.class);
+			if(!authResponse.isAuthorized()) {
+				return "direct:unauthorized";
+			}
+			exchange.getIn().setBody(exchange.getProperty("SCHEDULE", Schedule.class));
 			return "direct:submit";
 		default:
 			break;

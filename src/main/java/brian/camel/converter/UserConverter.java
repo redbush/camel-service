@@ -4,24 +4,16 @@ import org.apache.camel.Converter;
 
 import brian.camel.domain.User;
 import brian.camel.domain.UserDto;
-import brian.camel.domain.CreateUserDto;
 
 @Converter
 public class UserConverter {
 
 	@Converter
-	public User convert(final CreateUserDto userDto) {
+	public User convert(final UserDto user) {
 		
-		return User
-				.builder()
-				.name(userDto.getName())
+		return User.builder()
+				.name(user.getName())
 				.build();
 	}
-	
-	@Converter
-	public UserDto convert(final User user) {
-		
-		return new UserDto(user.getName(), user.getCreatedAt(), user.getUpdatedAt());
-	}
-	
+
 }

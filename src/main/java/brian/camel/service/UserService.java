@@ -1,28 +1,18 @@
 package brian.camel.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import brian.camel.datasource.UserDataSource;
-import brian.camel.datasource.UserNotFoundException;
 import brian.camel.domain.User;
 
 @Service
 public class UserService {
-	
-	private final UserDataSource userDataSource;
-	
-	public UserService(final UserDataSource userDataSourceIn) {
-		userDataSource = userDataSourceIn;
-	}
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 	
 	public void create(final User user) {
-		
-		userDataSource.create(user);
-	}
-	
-	public User get(final String name) throws UserNotFoundException {
-		
-		return userDataSource.get(name);
+		LOGGER.info("Creating user: {}", user);
 	}
 	
 }

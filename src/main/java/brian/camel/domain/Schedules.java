@@ -1,16 +1,18 @@
 package brian.camel.domain;
 
+import java.util.List;
+
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
+import lombok.Singular;
 
-@Getter
 @Builder
+@Getter
 @EqualsAndHashCode
-@ToString
-public class User {
+public class Schedules {
 
-	private final String name;
+	@Singular
+	private final List<Schedule> schedules;
 	
 }

@@ -12,9 +12,7 @@ import java.util.Map;
 import org.apache.camel.CamelContext;
 import org.apache.camel.EndpointInject;
 import org.apache.camel.builder.AdviceWithRouteBuilder;
-import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
-import org.apache.camel.model.ModelCamelContext;
 import org.apache.camel.test.spring.junit5.CamelSpringBootTest;
 import org.apache.camel.test.spring.junit5.MockEndpoints;
 import org.junit.jupiter.api.Test;
@@ -22,9 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -66,6 +61,7 @@ class ScheduleRouteIT {
 	@Test
 	void schedule() throws Exception {
 
+		// TODO: update this isn't done and will fail
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.setContentType(APPLICATION_JSON);
 		httpHeaders.setAccept(List.of(APPLICATION_JSON));
@@ -74,12 +70,8 @@ class ScheduleRouteIT {
 		parseEndpoint.expectedMessageCount(1);
 		authorizeEndpoint.expectedMessageCount(1);
 		submitEndpoint.expectedMessageCount(1);
-		ModelCamelContext adapt = camelContext.adapt(ModelCamelContext.class);
-		AdviceWithRouteBuilder.adviceWith(camelContext, "parse", a -> {
-			a.interceptSendToEndpoint("rest:*")
-			.skipSendToOriginalEndpoint()
-			.log("hey")
-				.transform().constant("hey");
+		AdviceWithRouteBuilder.adviceWith(camelContext, "parse", adviceRouteBuilder -> {
+			adviceRouteBuilder.weaveByToUri("*").replace().to("mock:parseRestEndpoint");
 		});
 		
 		ResponseEntity<String> actual = restTemplate.exchange(

@@ -8,13 +8,13 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode
-public class ParseRequestDto {
+public class JobConfirmationDto {
 
-	private final String query;
+	private final String jobId;
 	
 	@JsonCreator
-	public ParseRequestDto(@JsonProperty("query") final String queryIn) {
-		query = queryIn;
+	public JobConfirmationDto(@JsonProperty("jobId") final String jobIdIn) {
+		jobId = jobIdIn;
 	}
 	
 }

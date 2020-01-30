@@ -6,20 +6,17 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.bean.validator.BeanValidationException;
 import org.springframework.stereotype.Component;
 
-import brian.camel.datasource.UserNotFoundException;
-import brian.camel.domain.CreateUserDto;
 import brian.camel.domain.User;
 import brian.camel.domain.UserDto;
-import brian.camel.processor.UserNotFoundRepsonse;
 import brian.camel.processor.ValidationErrorResponse;
 import brian.camel.service.UserService;
 
 @Component
-public class UserRoute extends RouteBuilder {
+public class SimpleServiceRoute extends RouteBuilder {
 
 	private final UserService userService;
 	
-	public UserRoute(final UserService userServiceIn) {
+	public SimpleServiceRoute(final UserService userServiceIn) {
 		userService = userServiceIn;
 	}
 	
@@ -30,30 +27,21 @@ public class UserRoute extends RouteBuilder {
 			.handled(true)
 			.process(new ValidationErrorResponse());
 		
-		onException(UserNotFoundException.class)
-			.handled(true)
-			.process(new UserNotFoundRepsonse());
-		
 		rest("/users")
-			.clientRequestValidation(true)
+			.consumes("application/json")
 			.produces("application/json")
-			.post()
-				.consumes("application/json")
-				.type(CreateUserDto.class)
-				.to("direct:createUser")
-			.get("{name}")
-				.to("direct:findUser");
+			.clientRequestValidation(true)
+			.post("/create")
+				.type(UserDto.class)
+				.to("direct:createUser");
 		
 		from("direct:createUser")
 			.to("bean-validator:user")
 			.convertBodyTo(User.class)
-			.bean(userService, "create")
+			.bean(userService)
 			.setHeader(HTTP_RESPONSE_CODE, constant(201))
-			.setBody(constant(null));
-		
-		from("direct:findUser")
-			.bean(userService, "get(${header.name})")
-			.convertBodyTo(UserDto.class);
+			.transform().constant(null);
+				
 	}
-
+	
 }
